@@ -1,10 +1,17 @@
 package com.example.listview;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,15 +24,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
     TextView txtUser;
+    RecyclerView recyclerView;
     RequestQueue requestQueue;
-    String URL = "https://api-uat.kushkipagos.com/transfer-subscriptions/v1/bankList";
-    ArrayList<String> lstUser = new ArrayList<String> ();
+    String URL = "https://www.uealecpeterson.net/ws/listadoevaluadores.php";
+    ArrayList<Usuario> listUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,50 +38,79 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         requestQueue = Volley.newRequestQueue(this);
         stringRequest();
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerId);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     public void stringRequest(){
-        txtUser = (TextView)findViewById(R.id.txtListUser);
+        txtUser = (TextView)findViewById(R.id.txtLsUser);
         StringRequest request = new StringRequest(Request.Method.GET,
                 URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try{
+                            JSONObject object = new JSONObject(response);
+                            JSONArray JSONlista = new JSONArray();
+                            JSONlista.put(object);
 
-                            JSONArray JSONlista = new JSONArray(response);
+                            listUser = Usuario.JsonObjectsBuild(JSONlista);
 
-                            for(int i=0; i< JSONlista.length();i++){
-                                JSONObject user=  JSONlista.getJSONObject(i);
-                                lstUser.add("Codigo: "+user.getString("code")+ "\n"
-                                        + "Nombre: "+user.getString("name")+"\n\n"
-                                );
-                            }
-                            txtUser.setKeyListener(null);
-                            txtUser.setText(lstUser.toString());
+                            Adapter adapter = new Adapter(getApplicationContext(), listUser);
+
+                            int resId = R.anim.layout_animation_down_to_up;
+                            LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(),
+                                    resId);
+                            recyclerView.setLayoutAnimation(animation);
+
+                            recyclerView.setAdapter(adapter);
+
+//                            for(int i=0; i< JSONlista.length();i++){
+//                                JSONObject user=  JSONlista.getJSONObject(i);
+//                                listUser.add(user.toString());
+//                            }
+//
+//                            Adapter adapter = new Adapter(listUser);
+//                            recyclerView.setAdapter(adapter);
+
                         }catch (JSONException e) {
                             e.printStackTrace();
+                            txtUser.setVisibility(View.VISIBLE);
                             txtUser.setKeyListener(null);
-                            txtUser.setText(e.toString());
+                            txtUser.setText("HOLA " + e.toString() + "\n");
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                    }
+                    public void onErrorResponse(final VolleyError error) {
+                        txtUser.setKeyListener(null);
+                        if(error.networkResponse == null
+                                && error instanceof NoConnectionError
+                                && error.getMessage().contains("javax.net.ssl.SSLHandshakeException"))
+                        {
+                            txtUser.setVisibility(View.VISIBLE);
+                            txtUser.setText(error.toString());
+                            // Se ha producido un error con el certificado SSL y la conexión ha sido
+                            // rechazada
+                        }
                     }
                 }
-        )
-        {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Public-Merchant-Id", "84e1d0de1fbf437e9779fd6a52a9ca18");
-                return params;
-            }
-        }
-                ;
+                );
         requestQueue.add(request);
     }
 }
+//        {
+//            @Override
+//            public Map<String, String> getHeaders() {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("Public-Merchant-Id", "84e1d0de1fbf437e9779fd6a52a9ca18");
+//                return params;
+//            }
+//        }
