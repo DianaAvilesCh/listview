@@ -12,10 +12,20 @@ import java.util.Locale;
 
 public class Usuario {
 
+    private String id;
     private String nombres;
     private String area;
     private String urlavatar;
     private String urlavatar2;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getNombres() {
         return nombres;
@@ -49,21 +59,23 @@ public class Usuario {
         this.urlavatar2 = urlavatar2;
     }
 
-    public Usuario(String nombres, String area, String urlavatar2, String urlavatar) {
+
+    public Usuario(String id, String nombres, String area, String urlavatar, String urlavatar2) {
+        this.id = id;
         this.nombres = nombres;
         this.area = area;
-        this.urlavatar2 = urlavatar2;
         this.urlavatar = urlavatar;
+        this.urlavatar2 = urlavatar2;
     }
-
 
     public static ArrayList<Usuario> JsonObjectsBuild(JSONArray datos) throws JSONException {
         ArrayList<Usuario> usuarios = new ArrayList<>();
         ArrayList <String> lis = new ArrayList<>();
             for (int i = 0; i < datos.length(); i++) {
                 JSONObject user=  datos.getJSONObject(i);
-                Log.d("DATOS", user.toString());
-                usuarios.add(new Usuario(user.getString("nombres"),
+                //Log.d("DATOS", user.toString());
+                usuarios.add(new Usuario(user.getString("idevaluador"),
+                        user.getString("nombres"),
                         user.getString("area"),
                         user.getString("imgJPG"),
                         user.getString("imgjpg")));
