@@ -1,9 +1,13 @@
 package com.example.listview;
 
 import android.content.Context;
+import android.security.identity.IdentityCredentialStore;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,7 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.HttpException;
+import com.bumptech.glide.load.engine.GlideException;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,14 +43,23 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolderDatos> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
         Usuario usuario = listUser.get(position);
+        String desconocido ="https://www.definicionabc.com/wp-content/uploads/desconocido.jpg";
 
-        holder.textViewName.setText(usuario.getNombre());
-        holder.textViewMail.setText(usuario.getEmail());
-        holder.textViewURLAvatar.setText(usuario.getWebsite());
+        holder.tvNombre.setText(usuario.getNombres());
+        holder.tvArea.setText(usuario.getArea());
+        try{
+            Glide.with(Ctx)
+                    .load(usuario.getUrlavatar())
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(Glide.with(Ctx)
+                    .load(usuario.getUrlavatar())
+                    .error( Glide.with(Ctx)
+                            .load(desconocido)))
+                    .into(holder.imageView);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
-        Glide.with(Ctx)
-                .load(usuario.getUrlavatar())
-                .into(holder.imageView);
     }
 
     @Override
@@ -53,27 +69,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolderDatos> {
 
     public class ViewHolderDatos extends RecyclerView.ViewHolder {
 
-        TextView textViewName, textViewURLAvatar, textViewMail;
+        TextView tvNombre, tvArea, textViewURLAvatar;
         ImageView imageView;
 
         public ViewHolderDatos(View itemView) {
             super(itemView);
 
-            textViewName= itemView.findViewById(R.id.txtName);
+            tvNombre= itemView.findViewById(R.id.txtNombre);
             textViewURLAvatar = itemView.findViewById(R.id.txtAvatar);
-            textViewMail = itemView.findViewById(R.id.txtMail);
+            tvArea = itemView.findViewById(R.id.txtArea);
             imageView = itemView.findViewById(R.id.imgAvatar);
         }
 
-//        TextView dato;
-//
-//        public ViewHolderDatos(@NonNull View itemView) {
-//            super(itemView);
-//            dato = (TextView) itemView.findViewById(R.id.txtDatos);
-//        }
-//
-//        public void asignar(String s) {
-//            dato.setText(s);
-//        }
     }
 }

@@ -54,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try{
                             JSONObject object = new JSONObject(response);
-                            JSONArray JSONlista = new JSONArray();
-                            JSONlista.put(object);
+                            JSONArray JSONlista=  object.getJSONArray("listaaevaluador");
 
                             listUser = Usuario.JsonObjectsBuild(JSONlista);
 
@@ -68,13 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
                             recyclerView.setAdapter(adapter);
 
-//                            for(int i=0; i< JSONlista.length();i++){
-//                                JSONObject user=  JSONlista.getJSONObject(i);
-//                                listUser.add(user.toString());
-//                            }
-//
-//                            Adapter adapter = new Adapter(listUser);
-//                            recyclerView.setAdapter(adapter);
 
                         }catch (JSONException e) {
                             e.printStackTrace();
@@ -106,11 +98,3 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 }
-//        {
-//            @Override
-//            public Map<String, String> getHeaders() {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Public-Merchant-Id", "84e1d0de1fbf437e9779fd6a52a9ca18");
-//                return params;
-//            }
-//        }

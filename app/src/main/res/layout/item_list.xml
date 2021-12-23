@@ -25,7 +25,7 @@
                             android:padding="4dp" />
 
                         <TextView
-                            android:id="@+id/txtName"
+                            android:id="@+id/txtNombre"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
@@ -35,7 +35,7 @@
                             android:textColor="#000000" />
 
                         <TextView
-                            android:id="@+id/txtMail"
+                            android:id="@+id/txtArea"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/txtAvatar"
@@ -51,7 +51,7 @@
                             android:id="@+id/txtAvatar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/txtName"
+                            android:layout_below="@id/txtNombre"
                             android:layout_marginLeft="5dp"
                             android:layout_toRightOf="@id/imgAvatar"
                             android:text="URL Imagen"

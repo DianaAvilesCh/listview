@@ -14,71 +14,59 @@ public class Usuario {
 
     private String nombres;
     private String area;
-    private String website;
+    private String urlavatar;
+    private String urlavatar2;
 
-    public String getNombre() {
+    public String getNombres() {
         return nombres;
     }
 
-    public String getEmail() {
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getArea() {
         return area;
     }
 
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombres = nombre;
-    }
-
-    public void setEmail(String area) {
+    public void setArea(String area) {
         this.area = area;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public void setUrlavatar(String urlavatar) {
-        this.urlavatar = urlavatar;
     }
 
     public String getUrlavatar() {
         return urlavatar;
     }
 
-    private String urlavatar;
-
-    public Usuario(String nombres, String area, String website, String urlavatar) {
-        this.nombres = nombres;
-        this.area = area;
-        this.website = website;
+    public void setUrlavatar(String urlavatar) {
         this.urlavatar = urlavatar;
     }
 
-    public Usuario(JSONObject a) throws JSONException {
-        nombres =  a.getString("idevaluador").toString();
-        area =  a.getString("area").toString() ;
-        website =  a.getString("imgJPG").toString() ;
-        urlavatar = a.getString("imgjpg").toString() ;
+    public String getUrlavatar2() {
+        return urlavatar2;
     }
+
+    public void setUrlavatar2(String urlavatar2) {
+        this.urlavatar2 = urlavatar2;
+    }
+
+    public Usuario(String nombres, String area, String urlavatar2, String urlavatar) {
+        this.nombres = nombres;
+        this.area = area;
+        this.urlavatar2 = urlavatar2;
+        this.urlavatar = urlavatar;
+    }
+
 
     public static ArrayList<Usuario> JsonObjectsBuild(JSONArray datos) throws JSONException {
         ArrayList<Usuario> usuarios = new ArrayList<>();
         ArrayList <String> lis = new ArrayList<>();
             for (int i = 0; i < datos.length(); i++) {
                 JSONObject user=  datos.getJSONObject(i);
-//                Log.d("DATOS", user.toString());
-//                usuarios.add(new Usuario(user.getString("nombres"),
-//                        user.getString("area"),
-//                        user.getString("imgJPG"),
-//                        user.getString("imgjpg")));
-                lis.add("Nombre: "+user.getString("nombres")+ "\n"
-                        + "Email: "+user.getString("area")+"\n"
-                        + "Genero: "+user.getString("imgJPG")+"\n"
-                        + "Estado: "+user.getString("imgjpg")+"\n\n");
-                Log.d("DATOS", lis.toString());
+                Log.d("DATOS", user.toString());
+                usuarios.add(new Usuario(user.getString("nombres"),
+                        user.getString("area"),
+                        user.getString("imgJPG"),
+                        user.getString("imgjpg")));
             }
         return usuarios;
     }
