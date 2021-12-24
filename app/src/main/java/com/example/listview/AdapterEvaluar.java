@@ -35,7 +35,7 @@ public class AdapterEvaluar extends RecyclerView.Adapter<AdapterEvaluar.ViewHold
     @Override
     public void onBindViewHolder(@NonNull AdapterEvaluar.ViewHolderDatos holder, int position) {
         UsuarioEvaluar usuario = listUser.get(position);
-        String desconocido ="https://www.definicionabc.com/wp-content/uploads/desconocido.jpg";
+        String desconocido ="https://us.123rf.com/450wm/metelsky/metelsky1809/metelsky180900220/109815466-perfil-de-avatar-de-hombre-silueta-de-rostro-masculino-o-icono-aislado-sobre-fondo-blanco-ilustració.jpg";
 
         holder.tvNombre.setText(usuario.getNombres());
         holder.tvCargo.setText(usuario.getCargo());
@@ -48,7 +48,7 @@ public class AdapterEvaluar extends RecyclerView.Adapter<AdapterEvaluar.ViewHold
                     .load(usuario.getUrlavatar())
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .error(Glide.with(Ctx)
-                            .load(usuario.getUrlavatar())
+                            .load(usuario.getUrlavatar2())
                             .error( Glide.with(Ctx)
                                     .load(desconocido)))
                     .into(holder.imageView);

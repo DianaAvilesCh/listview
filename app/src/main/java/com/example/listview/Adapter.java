@@ -32,7 +32,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolderDatos> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
         Usuario usuario = listUser.get(position);
-        String desconocido ="https://www.definicionabc.com/wp-content/uploads/desconocido.jpg";
+        String desconocido ="https://us.123rf.com/450wm/metelsky/metelsky1809/metelsky180900220/109815466-perfil-de-avatar-de-hombre-silueta-de-rostro-masculino-o-icono-aislado-sobre-fondo-blanco-ilustració.jpg?ver=6";
 
         holder.tvNombre.setText(usuario.getNombres());
         holder.tvArea.setText(usuario.getArea());
@@ -42,7 +42,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolderDatos> {
                     .load(usuario.getUrlavatar())
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .error(Glide.with(Ctx)
-                    .load(usuario.getUrlavatar())
+                    .load(usuario.getUrlavatar2())
                     .error( Glide.with(Ctx)
                             .load(desconocido)))
                     .into(holder.imageView);
